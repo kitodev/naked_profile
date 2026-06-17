@@ -35,6 +35,53 @@ function brandedErrorResponse(): Response {
     });
 }
 
+function readPublicEnv(env: unknown, name: string): string | undefined {
+    if (!env || typeof env !== "object") return undefined;
+    const value = (env as Record<string, unknown>)[name];
+    return typeof value === "string" && value.length > 0 ? value : undefined;
+}
+
+function runtimeConfigScript(env: unknown): string | undefined {
+    const config = {
+        VITE_SUPABASE_URL: readPublicEnv(env, "VITE_SUPABASE_URL"),
+        VITE_SUPABASE_PUBLISHABLE_KEY: readPublicEnv(
+            env,
+            "VITE_SUPABASE_PUBLISHABLE_KEY",
+        ),
+    };
+
+    if (!config.VITE_SUPABASE_URL || !config.VITE_SUPABASE_PUBLISHABLE_KEY) {
+        return undefined;
+    }
+
+    const json = JSON.stringify(config).replace(/</g, "\\u003c");
+    return `<script>window.__APP_CONFIG__=${json};</script>`;
+}
+
+async function withRuntimeClientConfig(
+    response: Response,
+    env: unknown,
+): Promise<Response> {
+    const script = runtimeConfigScript(env);
+    if (!script) return response;
+
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!contentType.includes("text/html")) return response;
+
+    const html = await response.clone().text();
+    const body = html.includes("</head>")
+        ? html.replace("</head>", `${script}</head>`)
+        : `${script}${html}`;
+    const headers = new Headers(response.headers);
+    headers.delete("content-length");
+
+    return new Response(body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers,
+    });
+}
+
 function isCatastrophicSsrErrorBody(
     body: string,
     responseStatus: number,
@@ -104,7 +151,8 @@ export default {
 
             const handler = await getServerEntry();
             const response = await handler.fetch(request, env, ctx);
-            return await normalizeCatastrophicSsrResponse(response);
+            const normalized = await normalizeCatastrophicSsrResponse(response);
+            return await withRuntimeClientConfig(normalized, env);
         } catch (error) {
             console.error(error);
             return brandedErrorResponse();

@@ -1,7 +1,21 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+type RuntimeClientConfig = {
+  VITE_SUPABASE_URL?: string;
+  VITE_SUPABASE_PUBLISHABLE_KEY?: string;
+};
+
+const runtimeConfig =
+  typeof window === "undefined"
+    ? undefined
+    : (window as Window & { __APP_CONFIG__?: RuntimeClientConfig })
+        .__APP_CONFIG__;
+
+const supabaseUrl =
+  import.meta.env.VITE_SUPABASE_URL ?? runtimeConfig?.VITE_SUPABASE_URL;
+const supabaseAnonKey =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
+  runtimeConfig?.VITE_SUPABASE_PUBLISHABLE_KEY;
 const fallbackSupabaseUrl = "https://example.supabase.co";
 const fallbackSupabaseAnonKey = "missing-supabase-publishable-key";
 
