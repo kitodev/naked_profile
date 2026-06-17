@@ -22,7 +22,10 @@ import creator1 from "../assets/creator1.jpg";
 import creator2 from "../assets/creator2.jpg";
 import creator3 from "../assets/creator3.jpg";
 import creator4 from "../assets/creator4.jpg";
-import { supabase } from "../integrations/supabase/client";
+import {
+    isSupabaseConfigured,
+    supabase,
+} from "../integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
     head: () => ({
@@ -46,6 +49,7 @@ export const Route = createFileRoute("/")({
     }),
     beforeLoad: async () => {
         if (typeof window === "undefined") return;
+        if (!isSupabaseConfigured) return;
 
         const { data } = await supabase.auth.getSession();
         if (data.session) {

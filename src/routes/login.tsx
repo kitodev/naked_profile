@@ -7,7 +7,10 @@ import {
 import { useState } from "react";
 import { Eye, EyeOff, Heart, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "../integrations/supabase/client";
+import {
+    isSupabaseConfigured,
+    supabase,
+} from "../integrations/supabase/client";
 
 export const Route = createFileRoute("/login")({
     head: () => ({
@@ -22,6 +25,7 @@ export const Route = createFileRoute("/login")({
     }),
     beforeLoad: async () => {
         if (typeof window === "undefined") return;
+        if (!isSupabaseConfigured) return;
 
         const { data } = await supabase.auth.getSession();
         if (data.session) {
@@ -40,6 +44,14 @@ function LoginPage() {
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
+
+        if (!isSupabaseConfigured) {
+            toast.error(
+                "Supabase is not configured. Set the Heroku config vars and redeploy.",
+            );
+            return;
+        }
+
         setLoading(true);
 
         try {
