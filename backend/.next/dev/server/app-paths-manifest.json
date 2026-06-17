@@ -1,0 +1,5 @@
+{
+  "/api/account/route": "app/api/account/route.js",
+  "/api/creator-applications/verification/route": "app/api/creator-applications/verification/route.js",
+  "/api/health/route": "app/api/health/route.js"
+}

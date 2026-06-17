@@ -1,0 +1,3 @@
+{
+  "/api/creators/[creatorId]/follow/route": "app/api/creators/[creatorId]/follow/route.js"
+}

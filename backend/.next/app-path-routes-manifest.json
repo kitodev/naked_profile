@@ -1,0 +1,19 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/account/route": "/api/account",
+  "/api/conversations/[conversationId]/messages/route": "/api/conversations/[conversationId]/messages",
+  "/api/conversations/[conversationId]/route": "/api/conversations/[conversationId]",
+  "/api/conversations/route": "/api/conversations",
+  "/api/creator-applications/route": "/api/creator-applications",
+  "/api/creator-applications/verification/callback/route": "/api/creator-applications/verification/callback",
+  "/api/creator-applications/verification/route": "/api/creator-applications/verification",
+  "/api/creators/[creatorId]/follow/route": "/api/creators/[creatorId]/follow",
+  "/api/creators/[creatorId]/subscribe/route": "/api/creators/[creatorId]/subscribe",
+  "/api/health/route": "/api/health",
+  "/api/payments/create-checkout-session/route": "/api/payments/create-checkout-session",
+  "/api/payments/webhook/route": "/api/payments/webhook",
+  "/api/posts/[postId]/bookmark/route": "/api/posts/[postId]/bookmark",
+  "/api/posts/[postId]/like/route": "/api/posts/[postId]/like",
+  "/api/posts/route": "/api/posts"
+}

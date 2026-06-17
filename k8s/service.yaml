@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fanly
+  namespace: fanly
+  labels:
+    app.kubernetes.io/name: fanly
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: fanly
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
