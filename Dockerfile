@@ -11,7 +11,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN bun run build
 
-FROM oven/bun:1.2.23-slim AS runtime
+FROM node:22-slim AS runtime
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -24,5 +24,5 @@ COPY --from=build /app/dist ./dist
 
 EXPOSE 3000
 
-USER bun
-CMD ["bun", "run", "start"]
+USER node
+CMD ["npm", "start"]
