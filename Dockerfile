@@ -19,9 +19,10 @@ ENV HOST=0.0.0.0
 ENV PORT=3000
 
 COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/.output ./.output
+COPY --from=build /app/scripts ./scripts
+COPY --from=build /app/dist ./dist
 
 EXPOSE 3000
 
 USER bun
-CMD ["bun", "run", ".output/server/index.mjs"]
+CMD ["bun", "run", "start"]

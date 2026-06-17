@@ -10,7 +10,9 @@
     "backend:typecheck": "npm --prefix backend run typecheck",
     "build": "vite build",
     "build:dev": "vite build --mode development",
+    "heroku-postbuild": "npm run build",
     "preview": "vite preview",
+    "start": "node scripts/serve-dist.mjs",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
