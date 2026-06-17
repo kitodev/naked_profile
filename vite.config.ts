@@ -6,7 +6,6 @@ import viteReact from '@vitejs/plugin-react'
 import viteTsconfigPaths from 'vite-tsconfig-paths'   // Recommended
 
 export default defineConfig({
-  base: '/evo/',
   plugins: [
     tailwindcss(),
     viteTsconfigPaths(),           // Helps with @/ aliases

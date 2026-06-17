@@ -10,7 +10,6 @@ const clientDir = resolve(rootDir, "dist/client");
 const serverEntryPath = resolve(rootDir, "dist/server/server.js");
 const port = Number(process.env.PORT ?? 3000);
 const host = process.env.HOST ?? "0.0.0.0";
-const basePath = "/evo";
 
 if (!existsSync(serverEntryPath)) {
   console.error(
@@ -38,10 +37,7 @@ const contentTypes = {
 };
 
 function resolveStaticPath(pathname) {
-  const publicPathname = pathname.startsWith(`${basePath}/`)
-    ? pathname.slice(basePath.length)
-    : pathname;
-  const decodedPathname = decodeURIComponent(publicPathname);
+  const decodedPathname = decodeURIComponent(pathname);
   const normalizedPathname = normalize(decodedPathname).replace(/^(\.\.[/\\])+/, "");
   const filePath = resolve(join(clientDir, normalizedPathname));
 
