@@ -41,13 +41,24 @@ function readPublicEnv(env: unknown, name: string): string | undefined {
     return typeof value === "string" && value.length > 0 ? value : undefined;
 }
 
+function readFirstPublicEnv(env: unknown, names: string[]): string | undefined {
+    for (const name of names) {
+        const value = readPublicEnv(env, name);
+        if (value) return value;
+    }
+    return undefined;
+}
+
 function runtimeConfigScript(env: unknown): string | undefined {
     const config = {
-        VITE_SUPABASE_URL: readPublicEnv(env, "VITE_SUPABASE_URL"),
-        VITE_SUPABASE_PUBLISHABLE_KEY: readPublicEnv(
-            env,
+        VITE_SUPABASE_URL: readFirstPublicEnv(env, [
+            "VITE_SUPABASE_URL",
+            "SUPABASE_URL",
+        ]),
+        VITE_SUPABASE_PUBLISHABLE_KEY: readFirstPublicEnv(env, [
             "VITE_SUPABASE_PUBLISHABLE_KEY",
-        ),
+            "SUPABASE_PUBLISHABLE_KEY",
+        ]),
     };
 
     if (!config.VITE_SUPABASE_URL || !config.VITE_SUPABASE_PUBLISHABLE_KEY) {
