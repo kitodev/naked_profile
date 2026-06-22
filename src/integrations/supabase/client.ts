@@ -12,10 +12,10 @@ const runtimeConfig =
         .__APP_CONFIG__;
 
 const supabaseUrl =
-  import.meta.env.VITE_SUPABASE_URL ?? runtimeConfig?.VITE_SUPABASE_URL;
+  runtimeConfig?.VITE_SUPABASE_URL ?? import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey =
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ??
-  runtimeConfig?.VITE_SUPABASE_PUBLISHABLE_KEY;
+  runtimeConfig?.VITE_SUPABASE_PUBLISHABLE_KEY ??
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const fallbackSupabaseUrl = "https://example.supabase.co";
 const fallbackSupabaseAnonKey = "missing-supabase-publishable-key";
 
